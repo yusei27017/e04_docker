@@ -55,7 +55,7 @@ if __name__ == "__main__":
     for name, key_word in key_word_dict.items():
         condition_search(key_word, name)
 
-    for _, db_name in key_word_dict.items():
+    for db_name, _ in key_word_dict.items():
 
         results = mongo.find_all_data(db_name, today)
         for res in results:

@@ -1,0 +1,25 @@
+version: '3'
+services:
+  e04-crowl:
+    image: runqukunf/e04-crowl
+    container_name: e04-crowl
+    volumes:
+      - ./python_dev:/python_dev
+    networks:
+      - dev-network
+    depends_on:
+      - dev-mongo
+    command: ['python3', 'e04.py']
+
+  dev-mongo:
+    image: mongo:4.4
+    container_name: dev-mongo
+    volumes:
+      - ./db/mongo:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - dev-network
+
+networks:
+  dev-network:

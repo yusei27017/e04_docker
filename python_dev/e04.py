@@ -44,6 +44,8 @@ def condition_search(key_word, db_name):
 
 if __name__ == "__main__":
     print("start")
+    # 在這輸入 資料庫名稱:查詢關鍵字
+    # 修改env中的網址也可更改查詢條件。
     key_word_dict = {
         # "SE" : "Software%20Engineer",
         # "Backend" : "Backend%20Engineer",

@@ -37,8 +37,11 @@ def condition_search(key_word, db_name):
                 ajax_content = ref_dict['ajax_content']
                 result = sess.get(ajax_content, headers=header)
                 json_description = json.loads(result.text)
-                json_description['data']['jobNo'] = job_no
-                mongo.insert_job_description(json_description['data'], db_name)
+                if json_description['data']:
+                    json_description['data']['jobNo'] = job_no
+                    mongo.insert_job_description(json_description['data'], db_name)
+                else:
+                    print(json_description)
     return
 
 

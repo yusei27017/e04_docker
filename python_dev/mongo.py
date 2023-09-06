@@ -95,7 +95,4 @@ def global_search_by_jobNo(jobNo):
     
 
 if __name__ == "__main__":
-    # find_job('Backend')
-    # {'compName':{$regex:"倍特.*"}}
-    global_search_by_jobNo("12512671")
     print('end')

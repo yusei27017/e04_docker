@@ -37,10 +37,11 @@ def condition_search(key_word, db_name):
                 ajax_content = ref_dict['ajax_content']
                 result = sess.get(ajax_content, headers=header)
                 json_description = json.loads(result.text)
-                if json_description['data']:
+                # if json_description['data']:
+                try:
                     json_description['data']['jobNo'] = job_no
                     mongo.insert_job_description(json_description['data'], db_name)
-                else:
+                except:
                     print(json_description)
     return
 
@@ -50,11 +51,11 @@ if __name__ == "__main__":
     # 在這輸入 資料庫名稱:查詢關鍵字
     # 修改env中的網址也可更改查詢條件。
     key_word_dict = {
-        # "SE" : "Software%20Engineer",
-        # "Backend" : "Backend%20Engineer",
-        # "Python" : "python",
+        "SE" : "Software%20Engineer",
+        "Backend" : "Backend%20Engineer",
+        "Python" : "python",
         "PHP" : "php",
-        # "DevOps": "DevOps"
+        "DevOps": "DevOps"
     }
     
     for name, key_word in key_word_dict.items():

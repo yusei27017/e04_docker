@@ -9,8 +9,8 @@ services:
       - dev-network
     depends_on:
       - dev-mongo
-    command: ['python3', 'e04.py']
-
+    # command: ['python3', 'e04.py']
+    command: ['tail', '-f', '/dev/null']
   dev-mongo:
     image: mongo:4.4
     container_name: dev-mongo

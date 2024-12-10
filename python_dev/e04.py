@@ -13,32 +13,25 @@ def write_in_local(data, fileName):
     return
 
 def condition_search(key_word, db_name):
-    header['Referer'] = get_header_referer(key_word)
-    for i in range(1,31):
+    header['Referer'] = get_header_referer()
+    for i in range(1,21):
         condition_url = get_request_url(key_word, i)
         res = sess.get(condition_url, headers=header)
-        json_data = json.loads(res.text)        
-        job_data = json_data['data']['list']
-        for job_log in job_data:
-            if not job_log['tags'] or 'emp' not in job_log['tags']:
-                job_log['empCnt'] = 0
-            else:
-                emp_cnt = re.findall('員工(.*?)人',job_log['tags']['emp']['desc'])[0]
-                job_log['empCnt'] = int(emp_cnt)
+        json_data = json.loads(res.text)['data']        
+        for job_log in json_data:
             mongo.insert_job_list(job_log, db_name)
             description_link = job_log['link']['job']
             job_no = job_log['jobNo']
-            pattern_str = 'job/(.*?)jobsource'
+            pattern_str = 'job/([^/]+)'
             check_id = re.findall(pattern_str, description_link)
-            if check_id:
+            if len(check_id) > 0:
                 job_id = check_id[0]
                 ref_dict = get_referer_for_detail(job_id)
                 header['Referer'] = ref_dict['referer']
                 ajax_content = ref_dict['ajax_content']
                 result = sess.get(ajax_content, headers=header)
-                json_description = json.loads(result.text)
-                # if json_description['data']:
                 try:
+                    json_description = json.loads(result.text)
                     json_description['data']['jobNo'] = job_no
                     mongo.insert_job_description(json_description['data'], db_name)
                 except:
@@ -48,22 +41,17 @@ def condition_search(key_word, db_name):
 
 if __name__ == "__main__":
     print("start")
-    # 在這輸入 資料庫名稱:查詢關鍵字
-    # 修改env中的網址也可更改查詢條件。
     key_word_dict = {
-        "SE" : "Software%20Engineer",
-        "Backend" : "Backend%20Engineer",
-        "Python" : "python",
-        "PHP" : "php",
-        "DevOps": "DevOps"
+        "GO" : "golang",
+        # "Python" : "python"
     }
-    
+
     for name, key_word in key_word_dict.items():
         condition_search(key_word, name)
 
-    for db_name, _ in key_word_dict.items():
+    # for db_name, _ in key_word_dict.items():
 
-        results = mongo.find_all_data(db_name, today)
-        for res in results:
-            company.data_analysis(res, today, db_name)
+    #     results = mongo.find_all_data(db_name, today)
+    #     for res in results:
+    #         company.data_analysis(res, today, db_name)
     print("end")

@@ -41,14 +41,14 @@ mongo_search_pipeline = [
 
 today = datetime.datetime.today().strftime("%Y%m%d")
 
-def get_header_referer(key_word):
-    return f"https://www.104.com.tw/jobs/search/?ro=0&kwop=7&keyword={key_word}&expansionType=area,spec,com,job,wf,wktm&area=6001001000,6001002000,6001005000&order=14&asc=0&page=1&mode=s&jobsource=2018indexpoc&langFlag=0&langStatus=0&recommendJob=1&hotJob=1"
+def get_header_referer():
+    return f"https://www.104.com.tw/jobs/search/?"
 
 def get_request_url(key_word, i):
-    return f"https://www.104.com.tw/jobs/search/list?ro=0&kwop=7&keyword={key_word}&expansionType=area,spec,com,job,wf,wktm&area=6001001000,6001002000,6001005000&order=15&asc=0&page={i}&mode=s&jobsource=2018indexpoc&langFlag=0&langStatus=0&recommendJob=1&hotJob=1"
+    return f"https://www.104.com.tw/jobs/search/api/jobs?jobsource=index_s&keyword={key_word}&mode=s&order=15&page={i}&pagesize=20"
 
 def get_referer_for_detail(job_id):
     return {
-        "referer": f'https://www.104.com.tw/job/{job_id}jobsource=jolist_a_relevance',
+        "referer": f'https://www.104.com.tw/job/{job_id}jobsource=joblist_bact_n',
         "ajax_content": f'https://www.104.com.tw/job/ajax/content/{job_id}'
         }
